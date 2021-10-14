@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Последние статьи {% endblock %}
+
+{% block content %}
+<canvas id="myChart" width="100%" height="50"></canvas>
+<script>
+var ctx = document.getElementById('myChart');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        responsive: true,
+        labels: {{dates|safe}},
+        datasets: [{
+            label: 'заражений',
+            data: {{ cases }},
+            backgroundColor: 'rgba(206, 22, 22, 1)',
+            borderWidth: 1
+        },
+<!--        {-->
+<!--            label: 'смертей',-->
+<!--            data: {{ deaths }},-->
+<!--            backgroundColor: 'rgba(53, 53, 53, 1)',-->
+
+<!--            borderWidth: 1-->
+<!--        }-->
+        ]
+    },
+
+    options: {
+        scales: {
+            y: {
+                type: 'linear',
+
+                text: 'Количество',
+                position: 'left',
+            },
+            x: {
+                stacked: true,
+                text: 'Дата',
+
+                },
+
+
+
+        }
+    },
+
+
+});
+
+
+
+
+</script>
+{% endblock %}
