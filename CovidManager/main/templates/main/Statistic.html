@@ -11,7 +11,9 @@
     <div class="title-statistic">Статистика по COVID-19 <br><span></span>{{country_title}}</div>
   <div class="row">
     <div class="col">
-      <img class="img-fluid" src="{% static 'images/statistic.png' %}">
+        <canvas id="myChartBar" width="50%" height="40"></canvas>
+
+<!--      <img class="img-fluid" src="{% static 'images/statistic.png' %}">-->
     </div>
     <div class="col">
 
@@ -57,6 +59,7 @@
 
 
 <canvas id="myChart" width="100%" height="50"></canvas>
+
 <script>
 var ctx = document.getElementById('myChart');
 var myChart = new Chart(ctx, {
@@ -173,6 +176,61 @@ var myChart = new Chart(ctx, {
 },
 
 
+});
+
+var ctxB = document.getElementById('myChartBar');
+var myChartBar = new Chart(ctxB, {
+type: 'bar',
+  data: {
+        responsive: true,
+        labels: {{countries_top_title|safe}},
+        datasets: [
+        {
+            label: 'умерло',
+            data: {{ countries_top_deaths }},
+            borderColor: '#27272A',
+            backgroundColor: 'rgba(39, 39, 42, 0.8)',
+        },
+        {
+            label: 'выздоровело',
+            data: {{ countries_top_recovered }},
+            borderColor: '#A3E635',
+            backgroundColor: 'rgba(101, 163, 13, 0.8)',
+
+        },
+        {
+            label: 'выявлено',
+            data: {{ countries_top_cases }},
+            borderColor: '#DC2626',
+            backgroundColor: 'rgba(220, 38, 38, 0.8)',
+            stackWeight: 1,
+
+        },
+
+        ]},
+  options: {
+    plugins: {
+        tooltip:{
+        padding:0
+        },
+      title: {
+        display: false,
+        text: 'Страны с нибольим количество зараженых'
+      },
+    },
+    interaction: {
+          intersect: false,
+        },
+    responsive: true,
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true
+      }
+    }
+  }
 });
 
 
