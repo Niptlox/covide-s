@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Последние статьи {% endblock %}
+
+{% block content %}
+    {{news_list|safe}}
+{% endblock %}

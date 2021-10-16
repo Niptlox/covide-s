@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.statistic_ru, name='ru'),
     path('reg', views.statistic_reg, name='reg'),
     path('world', views.statistic_world, name='world'),
+    path('news', views.news, name='news'),
     # path('map/ru', views.map_ru, name='mapRU'),
     # path('world?country=<str>', views.statistic_world, name='world_'),
 

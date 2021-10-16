@@ -1,9 +1,14 @@
 # from django.shortcuts import render
 from django.shortcuts import render, redirect
 
+from bs4 import BeautifulSoup
+
 from django.http import HttpResponseRedirect, Http404, HttpRequest, HttpResponseForbidden
 import requests
+import requests as req
 from .loadData import *
+
+from requests_html import HTMLSession
 
 date_update = dates[-1]
 
@@ -116,38 +121,6 @@ def statistic_region_context(rid):
             }
 
 
-def statistic_ru_old(request: HttpRequest):
-    urls_api = (
-        'https://disease.sh/v3/covid-19/historical/ru?lastdays=all',
-        'https://disease.sh/v3/covid-19/countries/ru?strict=true',
-        "https://disease.sh/v3/covid-19/vaccine/coverage/countries/ru?lastdays=all&fullData=false"
-    )
-    
-    if request.method == 'GET':
-        region = request.GET.get('region', None)
-        reg_id = regions_id[region]
-        if reg_id == "255":
-            region = None
-    elif request.method == "POST":
-        region = request.POST['region']
-        reg_id = regions_id[region]
-        if reg_id == "255":
-            region = None
-    else:
-        region = None
-    if region:
-        context = statistic_region_context(reg_id)
-    else:
-        context = statistic_context(urls_api)
-        region = "Россия"
-        context["region"] = "Россия"
-    
-    context["region"] = context["country_title"] = region
-    context["regions_list"] = regions_title
-    print("regions:", regions_title)
-    return render(request, 'main/InfoRussian.html', context=context)
-
-
 def statistic_world(request: HttpRequest, country=None):
     urls_api = urls_api_all
     if request.method == 'GET':
@@ -156,8 +129,8 @@ def statistic_world(request: HttpRequest, country=None):
         country = request.POST['country']
     else:
         country = None
-    # if country == "Russia":
-    #     return redirect("main:ru")
+    if country == "Russia":
+        context = context_ru
     if country == "World":
         context = context_all
     elif country:
@@ -176,3 +149,19 @@ def statistic_world(request: HttpRequest, country=None):
     
     context["countries_list"] = ["World"] + countries_list
     return render(request, 'main/InfoWorld.html', context=context)
+
+
+def news(request: HttpRequest):
+    url = "https://tass.ru/tag/pandemiya-covid-19"
+    
+    
+    resp = req.get(url)
+    
+    soup = BeautifulSoup(resp.text, 'lxml')
+    div = soup.find("div", {"class":"news-list"})
+    print(div.html)
+
+    # n_list = r.html.find('news-list', first=True)
+    # print(n_list)
+    html = div.html
+    return render(request, 'main/news.html', context={"news_list": html})

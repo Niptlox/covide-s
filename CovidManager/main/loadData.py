@@ -5,14 +5,21 @@ month_list = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн',
               'июл', 'авг', 'сен', 'окт', 'ноя', 'дек']
 
 urls_api_all = (
-        'https://disease.sh/v3/covid-19/historical/all?lastdays=all',
-        'https://disease.sh/v3/covid-19/all?strict=true',
-        "https://disease.sh/v3/covid-19/vaccine/coverage/?lastdays=all&fullData=false"
-    )
+    'https://disease.sh/v3/covid-19/historical/all?lastdays=all',
+    'https://disease.sh/v3/covid-19/all?strict=true',
+    "https://disease.sh/v3/covid-19/vaccine/coverage/?lastdays=all&fullData=false"
+)
+urls_api_ru = (
+    'https://disease.sh/v3/covid-19/historical/ru?lastdays=all',
+    'https://disease.sh/v3/covid-19/countries/ru?strict=true',
+    "https://disease.sh/v3/covid-19/vaccine/coverage/countries/ru?lastdays=all&fullData=false"
+)
+
 
 def preparation_regions():
     regions_title = []
     with open('static/json/Russian.json', "r", encoding="utf-8") as f:
+        print("preparation_regions")
         d = json.load(f)["russia_stat_struct"]
         dates = d["dates"]
         regions_id = {}
@@ -58,6 +65,7 @@ def reload_countries():
 
 def preparation_countries():
     with open('static/json/Countries.json', "r", encoding="utf-8") as f:
+        print("preparation_countries")
         data = json.load(f)
         ctr_top = [[item[i] for item in data[:5]] for i in
                    ("country", "cases", "deaths", "recovered")]
@@ -68,6 +76,7 @@ def preparation_countries():
 def get_countries_list():
     url = "https://disease.sh/v3/covid-19/continents"
     with requests.get(url) as req:
+        print("countries_list:", req)
         data = req.json()
         lst = [ctr for contin in data for ctr in contin["countries"] if " " not in ctr]
         # print(lst)
@@ -146,8 +155,11 @@ def statistic_context(urls_api: tuple):
 
 reload_countries()
 reload_regions()
+
 regions_id, regions_title, dates, regions, regions_top_title, regions_top_cases, regions_top_deaths = preparation_regions()
 ctr_top = preparation_countries()
+
 countries_list = get_countries_list()
 
 context_all = statistic_context(urls_api_all)
+context_ru = statistic_context(urls_api_ru)
