@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Последние статьи {% endblock %}
+
+{% block content %}
+
+
+{% block content-title %} {% endblock %}
+
+
+<canvas id="myChart" width="100%" height="50"></canvas>
+<script>
+var ctx = document.getElementById('myChart');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        responsive: true,
+        labels: {{dates_list|safe}},
+        datasets: [
+        {
+            label: 'выздоровело',
+            data: {{ recovered_list }},
+            borderColor: '#84CC16',
+            radius:0,
+            borderWidth: 3,
+            yAxisID: 'y2',
+        },
+        {
+            label: 'выявлено',
+            data: {{ cases_list }},
+            borderColor: '#991B1B',
+            borderWidth: 3,
+            radius:0,
+            yAxisID: 'y2',
+
+        },
+        {
+            label: 'умерло',
+            data: {{ deaths_list }},
+            borderColor: '#18181B',
+            radius:0,
+
+            borderWidth: 3,
+            yAxisID: 'y2',
+        },
+
+        {
+            label: 'вакцинаций COVID-19',
+            data: {{ tests_list }},
+            borderColor: '#1D4ED8',
+            radius:0,
+            borderWidth: 3,
+            yAxisID: 'y3',
+        },
+
+        ]
+    },
+
+    options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: '{{country_title}}. Количество COVID-19 за всё время пандемии'
+          },
+        },
+        interaction: {
+          intersect: false,
+        },
+        scales: {
+            y2: {
+                            min: 0,
+
+                type: 'linear',
+                offset: true,
+                position: 'left',
+                stack: 'demo',
+                stackWeight: 1,
+                grid: {
+                  borderColor: 'rgba(53, 53, 53, 1)'
+                  },
+           y3: {
+                min: 0,
+                type: 'linear',
+                offset: true,
+                position: 'left',
+                stack: 'demo',
+                stackWeight: 1,
+                grid: {
+                  borderColor: '#1D4ED8'
+                  }
+                  },
+
+            y: {
+                            min: 0,
+
+                type: 'linear',
+                offset: true,
+                position: 'left',
+                stack: 'demo',
+                stackWeight: 1,
+                grid: {
+                  borderColor: 'rgba(206, 22, 22, 1)'
+                  },
+            },
+            x: {
+                stacked: true,
+                text: 'Дата',
+                title: {
+                  display: true
+                }
+            },
+            grid: {
+                drawOnChartArea: false, // only want the grid lines for one axis to show up
+            },
+
+
+            },
+
+
+
+
+
+    }
+},
+
+
+});
+
+
+
+
+</script>
+{% endblock %}

@@ -24,12 +24,25 @@
 }
 
 .stat-text-margin {
-    margin-top: 28px;
-    margin-left: 110px;
+    margin-top: 18px;
+    margin-left: 70px;
 }
 
 
 .stat-text {
+    margin-left: 0px;
+}
+
+
+.stat-text-left{
+    margin-top: 18px;
+
+    margin-left: 25px;
+}
+
+
+.stat-text-right {
+    margin-top: 18px;
     margin-left: 0px;
 }
 
@@ -63,4 +76,8 @@
     font-family: Verdana;
     font-weight: Bold;
     font-size: 38px;
+}
+
+.form-choice {
+    margin-top: 30px;
 }
