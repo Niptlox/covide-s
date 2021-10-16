@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 
 from django.http import HttpResponseRedirect, Http404, HttpRequest, HttpResponseForbidden
 import requests
-from .regions import regions_title, regions_id, dates, regions
+from .regions import *
 date_update = dates[-1]
 
 import urllib.request, json
@@ -178,6 +178,9 @@ def statistic_region_context(rid):
             "tests": tests,
             "cases_delta_list": cases_delta_list,
             "deaths_delta_list": deaths_delta_list,
+            "regions_top_title": regions_top_title,
+            "regions_top_cases": regions_top_cases,
+            "regions_top_deaths": regions_top_deaths
             }
 
 

@@ -11,6 +11,7 @@
 
 
 <canvas id="myChart" width="100%" height="50"></canvas>
+<canvas id="myChartBar" width="100%" height="50"></canvas>
 <script>
 var ctx = document.getElementById('myChart');
 var myChart = new Chart(ctx, {
@@ -118,18 +119,57 @@ var myChart = new Chart(ctx, {
 
 
             },
-
-
-
-
-
     }
 },
 
 
 });
 
+ctx = document.getElementById('myChartBar');
+var myChartBar = new Chart(ctx, {
+type: 'bar',
+  data: {
+        responsive: true,
+        labels: {{regions_top_title|safe}},
+        datasets: [
+        {
+            label: 'умерло',
+            data: {{ regions_top_deaths }},
+            borderColor: '#18181B',
+            backgroundColor: '#18181B',
+        },
+        {
+            label: 'выявлено',
+            data: {{ regions_top_cases }},
+            borderColor: '#991B1B',
+            backgroundColor: '#991B1B',
+        },
 
+        ]},
+  options: {
+    plugins: {
+        tooltip:{
+        padding:0
+        },
+      title: {
+        display: true,
+        text: 'Регионы с нибольим количество зараженых'
+      },
+    },
+    interaction: {
+          intersect: false,
+        },
+    responsive: true,
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true
+      }
+    }
+  }
+});
 
 
 </script>
